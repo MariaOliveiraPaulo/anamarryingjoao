@@ -1,0 +1,407 @@
+html, body {
+  font-family: 'Cormorant Infant', serif;
+  margin: 0;
+  color: #333;
+  text-align: center;
+}
+/* ECRÃ INICIAL */
+
+/* envelope */
+
+#envelope-screen{
+  position: relative;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  overflow: hidden;
+}
+
+#envelope-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/FlowerLeaves-removebg-preview.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  z-index: 0;
+}
+  
+.envelope{
+
+width:260px;
+height:160px;
+background:#e6d8c3;
+position:relative;
+border-radius:6px;
+z-index: 1;
+
+}
+
+.flap{
+
+position:absolute;
+width:100%;
+height:100%;
+background:#d8c6a8;
+
+transform-origin:top;
+transition:1s;
+
+clip-path:polygon(0 0,100% 0,50% 60%);
+
+}
+
+.open .flap{
+
+transform:rotateX(180deg);
+
+}
+
+.envelope-text{
+  margin-top: 20px;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #333;
+  position: relative;
+  z-index: 1;
+}
+
+
+
+
+/* esconder site */
+.hidden {
+  display: none;
+}
+
+
+
+.hero-top {
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: center;
+  inset: 0;
+
+  background-image: url("../assets/ornamento.png");
+
+  
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: 0;
+}
+
+.hero-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+background-repeat: repeat;
+ /* width: 220px; /* ajusta aqui */
+  height: auto;
+
+  z-index: 1;
+  opacity: 0.8; /* opcional */
+}
+
+.overlay {
+  position: relative;
+  z-index: 2;
+
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  
+}
+
+.logo {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+}
+
+.hero-date {
+  letter-spacing: 3px;
+  font-size: 14px;
+}
+
+/* CONTAINER */
+.container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-block {
+  position: relative;
+  overflow: visible;
+}
+
+/* SECÇÃO COM FUNDO + BRANQUEAMENTO */
+.secao-fundo {
+  position: relative;
+  padding: 40px 20px 260px;
+  background-image: url("../assets/fundo.png");
+  /*background-size: cover;*/
+  background-repeat: repeat;
+  background-position: center top;
+  text-align: center;
+}
+
+.secao-fundo::after {
+  content: "";
+  rotate: 180deg;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(140px, 16vw, 200px);
+  background-image: url("../assets/FlowerLeaves-removebg-preview.png");
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.20;
+}
+
+.secao-fundo > * {
+  position: relative;
+  z-index: 2;
+}
+
+.secao-fundo .ornamento {
+  position: absolute;
+  top: 18px;
+ /* margin-top: 0px;*/
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  max-width: 95%;
+  opacity: 0.5;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.secao-fundo .overlay {
+  position: relative;
+  z-index: 3;
+}
+
+/* camada branca por cima */
+.secao-fundo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0); /* controla aqui a intensidade */
+  z-index: 0;
+}
+
+/* DETALHES */
+.icon,
+.iconigreja {
+  width: auto;
+  max-height: 260px;
+  margin: 5px auto 0px;
+  display: block;
+}
+
+.details-igreja .iconigreja {
+  max-width: 160px;
+}
+
+.details-copos .icon {
+  max-width: 110px;
+  max-height: 110px;
+    margin-top:20px;
+    margin-bottom: 2px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.details-igreja {
+  margin-bottom: 30px;
+}
+
+.details img {
+  margin-bottom: -5px;
+}
+
+.details p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 0.5;
+}
+
+.details p + p {
+  margin-top: 2px;
+}
+
+/* BOTÃO RSVP */
+.rsvp {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 80px;
+  z-index: 3;
+}
+
+.rsvp a {
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
+  padding: 15px 40px;
+  background-color: rgba(200, 200, 200, 1);
+  color: #333;
+  text-decoration: none;
+  letter-spacing: 3px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  max-width: 320px;
+}
+
+.rsvp a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+
+
+.hero-date span {
+  display: block;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.title {
+  font-size: 20px;
+  margin: 10px 0;
+  line-height: 1.05;
+}
+
+.text {
+  line-height: 1.7;
+  margin-bottom: 30px;
+  font-size: 17px;
+  text-align: center;
+}
+
+.photo {
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto 30px;
+  display: block;
+}
+
+.rsvp a {
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .secao-fundo {
+    padding: 30px 16px 220px;
+  }
+
+  .secao-fundo::after {
+    height: clamp(140px, 24vw, 180px);
+  }
+
+  .rsvp {
+    bottom: 70px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+
+  .hero-date {
+    font-size: 14px;
+  }
+
+  .icon,
+  .iconigreja {
+    max-width: 140px;
+    max-height: 150px;
+  }
+
+  .rsvp a {
+    display: inline-block;
+    padding: 14px 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-date {
+    font-size: 13px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .text {
+    font-size: 15px;
+  }
+
+  .details {
+    gap: 14px;
+  }
+
+  .icon,
+  .iconigreja {
+    width: 180px;
+  }
+
+  .rsvp {
+    bottom: 60px;
+  }
+
+  .rsvp a {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 20px;
+  }
+}
+
+@font-face {
+  font-family: 'MinhaFonte';
+  src: url('../fonts/ss-bruney.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.hero-block {
+  background-color: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(2px);
+}
