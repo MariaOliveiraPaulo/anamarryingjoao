@@ -23,15 +23,15 @@ body {
   align-items: center; /* era flex-start — agora centra verticalmente */
 
   min-height:100dvh;
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
 /* CONTAINER CENTRAL */
 .container {
   margin: auto; /* era margin-top: 40px — agora centra horizontal e verticalmente */
-  width: 420px;
+   max-width:92vw;
   background: url(../assets/fundo.jpeg);
-  padding: 30px 30px 30px 30px;
+  padding: 30px 30px 50px;
   text-align: center;
   position: relative;
 }
