@@ -20,7 +20,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center; /* era flex-start — agora centra verticalmente */
-  min-height: 100vh;
+
+  min-height:100dvh;
+  overflow:hidden;
 }
 
 /* CONTAINER CENTRAL */
