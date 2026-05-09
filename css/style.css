@@ -66,6 +66,26 @@ body {
   margin-bottom: 25px;
 }
 
+
+.convite-inner{
+  padding:40px 28px;
+  text-align:center;
+}
+
+.nomes{
+  font-size:42px;
+  margin-bottom:20px;
+}
+
+.frase{
+  line-height:1.7;
+  margin-bottom:40px;
+}
+
+.data{
+  font-size:22px;
+}
+
 /* DATA */
 .data {
   position: relative;
@@ -107,6 +127,7 @@ body {
   align-items: center;
   gap: 15px;
   position: relative;
+  color: #4A6F56;
 }
 
 .dia-semana,
@@ -212,8 +233,8 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #e8e0d5;  /* bege próximo do fundo #f5f0ea */
-  border: 1px solid #d4c8b8;
+  background-color: transparent;  /* bege próximo do fundo #f5f0ea */
+  border: 1px solid #4A6F56;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -287,4 +308,124 @@ body {
   border-radius: 0 0 50px 50px;
   margin-top: 10px;
   margin-bottom: 0;
+}
+
+
+.scene{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100vw;
+  height:100vh;
+  overflow:visible;
+  background:#f5f0ea;
+}
+
+.envelope-wrap{
+  position:relative;
+  width:360px;
+  height:560px;
+  cursor:pointer;
+}
+
+.envelope-wrap svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:5;
+}
+
+.flap-top-g{
+  transform-origin:180px 0px;
+  transform-box:view-box;
+  transition:transform 0.8s cubic-bezier(.4,0,.2,1);
+}
+
+.open .flap-top-g{
+  transform:rotateX(180deg);
+}
+
+.seal-area{
+  position:absolute;
+  left:50%;
+  top:56%;
+  transform:translate(-50%, -50%);
+  z-index:20;
+  transition:opacity .3s;
+}
+
+.open .seal-area{
+  opacity:0;
+  pointer-events:none;
+}
+
+.seal-img{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.click-hint{
+  margin-top:12px;
+}
+
+.click-hint span{
+  font-size:18px;
+  color:#b0915a;
+  font-style:italic;
+}
+
+.convite-card{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:320px;
+  height:480px;
+
+  transform:
+    translate(-50%, 120%);
+
+  background:url(../assets/fundo.png);
+
+  border-radius:12px;
+
+  z-index:100;
+
+  overflow:auto;
+
+  transition:
+    transform 1.3s cubic-bezier(.22,1,.36,1);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.16);
+}
+
+.convite-card.show{
+  transform:
+    translate(-50%, -50%);
+}
+
+
+
+/* CARTÃO SAI DO ENVELOPE */
+.convite-card.show{
+  transform:
+    translateX(-50%)
+translateY(-55%);}
+
+/* ESCONDE O ENVELOPE */
+.envelope-hidden svg,
+.envelope-hidden .seal-area{
+  opacity:0;
+  transition:opacity .8s ease;
+  pointer-events:none;
+}
+
+/* CONVITE PASSA PARA A FRENTE */
+.envelope-hidden .convite-card{
+  z-index:50;
 }
