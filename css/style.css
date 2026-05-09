@@ -91,13 +91,14 @@ body {
   position: relative;
   margin: 40px 0 30px 0;
   text-align: center;
+  color: #4A6F56;
 }
 
 .mes {
   font-family: 'Cormorant Infant', serif;
   font-size: 16px;
   font-weight: 600;
-  color: #666;
+  color: #4A6F56;
   position: relative;
   height: 24px;
   margin: 0 auto 5px auto;
@@ -133,8 +134,7 @@ body {
 .dia-semana,
 .hora {
   font-size: 16px;
-  color: #666;
-  position: relative;
+color: #4A6F56;  position: relative;
 }
 
 .dia-semana::before,
@@ -145,6 +145,7 @@ body {
   position: absolute;
   left: 0;
   right: 0;
+  color: #4A6F56;
   height: 1px;
   background: linear-gradient(to right, transparent, #ccc, transparent);
 }
@@ -168,7 +169,7 @@ body {
 .ano {
   margin-top: 15px;
   font-size: 16px;
-  color: #666;
+  color: #4A6F56;
   font-weight: 500;
 }
 
