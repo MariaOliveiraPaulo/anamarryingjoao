@@ -275,8 +275,8 @@ body {
 }
 
 .icons img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
 }
 
@@ -289,6 +289,10 @@ body {
   white-space: normal;
   max-width: 80px;
   text-align: center;
+}
+
+.destaque .circle{
+  background:#4A6F56;
 }
 .label {
   width: 100px;
