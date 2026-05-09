@@ -3,6 +3,7 @@ html, body {
   margin: 0;
   color: #333;
   text-align: center;
+  overflow-x:hidden;
 }
 
 @font-face {
@@ -328,9 +329,9 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
-  width:100vw;
+  width:100%;
 min-height:100dvh;
-  overflow:visible;
+  overflow:hidden;
   background:#f5f0ea;
 }
 
