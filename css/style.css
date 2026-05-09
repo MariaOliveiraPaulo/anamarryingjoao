@@ -15,25 +15,22 @@ html, body {
 body {
   margin: 0;
   padding: 0;
-  background: url(../assets/fundo.png);
+  background: url(../assets/fundo.jpeg);
   font-family: 'Cormorant Infant', serif;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center; /* era flex-start — agora centra verticalmente */
   min-height: 100vh;
 }
 
 /* CONTAINER CENTRAL */
-/* Adiciona margem superior para descer o conteúdo */
 .container {
-  margin-top: 40px; /* ajuste conforme necessário */
+  margin: auto; /* era margin-top: 40px — agora centra horizontal e verticalmente */
   width: 420px;
   background: url(../assets/fundo.jpeg);
-  /*margin: 40px auto;*/
   padding: 30px 30px 50px 30px;
   text-align: center;
   position: relative;
- /* box-shadow: 0 0 20px rgba(0,0,0,0.05); */
 }
 
 /* TEXTOS */
@@ -134,7 +131,8 @@ body {
 .dia-semana,
 .hora {
   font-size: 16px;
-color: #4A6F56;  position: relative;
+  color: #4A6F56;
+  position: relative;
 }
 
 .dia-semana::before,
@@ -185,7 +183,6 @@ color: #4A6F56;  position: relative;
   z-index: 10;
 }
 
-/* IMPORTANTE: usa a mesma imagem e roda */
 .top-left {
   top: 0;
   left: 0;
@@ -234,7 +231,7 @@ color: #4A6F56;  position: relative;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: transparent;  /* bege próximo do fundo #f5f0ea */
+  background-color: transparent;
   border: 1px solid #4A6F56;
   display: flex;
   align-items: center;
@@ -384,45 +381,27 @@ color: #4A6F56;  position: relative;
 
 .convite-card{
   position:absolute;
-
   left:50%;
   top:50%;
-
   width:320px;
   height:480px;
-
-  transform:
-    translate(-50%, 120%);
-
+  transform: translate(-50%, 120%);
   background:url(../assets/fundo.jpeg);
-
   border-radius:12px;
-
   z-index:100;
-
   overflow:auto;
-
-  transition:
-    transform 1.3s cubic-bezier(.22,1,.36,1);
-
-  box-shadow:
-    0 12px 30px rgba(0,0,0,.16);
+  transition: transform 1.3s cubic-bezier(.22,1,.36,1);
+  box-shadow: 0 12px 30px rgba(0,0,0,.16);
 }
 
 .convite-card.show{
-  transform:
-    translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
-
-
-/* CARTÃO SAI DO ENVELOPE */
 .convite-card.show{
-  transform:
-    translateX(-50%)
-translateY(-55%);}
+  transform: translateX(-50%) translateY(-55%);
+}
 
-/* ESCONDE O ENVELOPE */
 .envelope-hidden svg,
 .envelope-hidden .seal-area{
   opacity:0;
@@ -430,7 +409,6 @@ translateY(-55%);}
   pointer-events:none;
 }
 
-/* CONVITE PASSA PARA A FRENTE */
 .envelope-hidden .convite-card{
   z-index:50;
 }
