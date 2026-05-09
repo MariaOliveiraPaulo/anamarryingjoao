@@ -1,124 +1,240 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convite de Casamento</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Envelope</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+    body {
+      overflow: hidden;
+      touch-action: manipulation;
+      background: #f5f0ea;
+    }
+
+    .scene {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      padding-bottom: env(safe-area-inset-bottom);
+      overflow: hidden;
+    }
+
+    .envelope-wrap {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      cursor: pointer;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .envelope-wrap svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Selo posicionado proporcionalmente ao ecrã */
+    .seal-area {
+      position: absolute;
+      left: 50%;
+      top: 56%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2vw;
+      z-index: 10;
+      transition: opacity 0.3s;
+    }
+    .open .seal-area { opacity: 0; pointer-events: none; }
+
+    .seal-img {
+      width: 25vw;
+      height: 25vw;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .click-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1vw;
+    }
+    .click-hint span {
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 3.5vw;
+      color: #b0915a;
+      letter-spacing: 0.03em;
+    }
+    .hint-hand {
+      width: 6vw;
+      height: 6vw;
+      stroke: #b0915a;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    /* Animação da aba superior */
+    .flap-top-g {
+      transform-origin: 180px 0px;
+      transform-box: view-box;
+      transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
+    }
+    .open .flap-top-g { transform: rotateX(180deg); }
+  </style>
 </head>
-
 <body>
 
-<div class="envelope-screen" id="envelope-screen">
-  <div class="envelope" id="envelope">
-    <div class="flap"></div>
-    <div class="body"></div>
-  </div>
-  <div class="envelope-text">Convite de Casamento</div>
-</div>
+<div class="scene">
+  <div class="envelope-wrap" id="env">
 
-<div id="site-content" class="hidden">
+    <svg viewBox="0 0 360 560"
+         xmlns="http://www.w3.org/2000/svg"
+         preserveAspectRatio="none"
+         style="position:absolute;inset:0;width:100%;height:100%;">
+      <defs>
 
-<div class="hero-block">
+        <!-- Textura floral (fallback sem imagem) -->
+        <pattern id="floral" patternUnits="userSpaceOnUse" width="80" height="80">
+          <rect width="80" height="80" fill="#f0ece6"/>
+          <g fill="none" stroke="#e2ddd6" stroke-width="0.8">
+            <ellipse cx="40" cy="40" rx="8" ry="14"/>
+            <ellipse cx="40" cy="40" rx="8" ry="14" transform="rotate(90,40,40)"/>
+            <ellipse cx="40" cy="40" rx="8" ry="14" transform="rotate(45,40,40)"/>
+            <ellipse cx="40" cy="40" rx="8" ry="14" transform="rotate(135,40,40)"/>
+            <circle cx="40" cy="40" r="5"/>
+            <circle cx="40" cy="40" r="2.5" fill="#ddd8d0" stroke="none"/>
+            <path d="M40,26 Q48,16 40,10 Q32,16 40,26Z" fill="#e5e0d8" stroke="none"/>
+            <path d="M40,54 Q48,64 40,70 Q32,64 40,54Z" fill="#e5e0d8" stroke="none"/>
+            <path d="M26,40 Q16,48 10,40 Q16,32 26,40Z" fill="#e5e0d8" stroke="none"/>
+            <path d="M54,40 Q64,48 70,40 Q64,32 54,40Z" fill="#e5e0d8" stroke="none"/>
+          </g>
+        </pattern>
 
-  <!-- HERO -->
-  
-  <!--<div class="hero-top">
-    <div class="overlay">
-      <img src="assets/logo.png" class="logo" alt="AJ Logo">
+        <!-- Imagem de fundo — substitui pelo teu caminho -->
+        <pattern id="bg" patternUnits="userSpaceOnUse" width="360" height="560">
+          <image href="assets/wayfair.jpeg" x="0" y="0" width="360" height="560" preserveAspectRatio="xMidYMid slice"/>
+        </pattern>
 
-      <div class="hero-date">
-        19 SETEMBRO 2026
-        <br>
-        <span>CUBA, PORTUGAL</span>
-      </div>
-    </div>
-  </div>-->
-<!--
-  <div class="hero-top">
+        <clipPath id="envClip">
+          <rect x="0" y="0" width="360" height="560" rx="6"/>
+        </clipPath>
 
-  <div class="hero-bg"></div>
+        <!-- Aba superior: começa em y=70 (1/8 de 560), bico arredondado -->
+        <clipPath id="clipTopFlap">
+          <path d="M0,0 L360,0 L360,70 L225,305 Q180,352 135,305 L0,70 Z"/>
+        </clipPath>
 
-  <img src="assets/fundo.png" class="hero-layer">
+        <!-- Aba inferior: começa em y=490 (7/8 de 560), bico arredondado -->
+        <clipPath id="clipBottomFlap">
+          <path d="M0,560 L360,560 L360,490 L225,255 Q180,208 135,255 L0,490 Z"/>
+        </clipPath>
 
-  <div class="overlay">
-    <img src="assets/logo.png" class="logo" alt="AJ Logo">
+        <!-- Abas laterais: só o miolo central -->
+        <clipPath id="clipLeft">
+          <polygon points="0,70 180,305 180,255 0,490"/>
+        </clipPath>
+        <clipPath id="clipRight">
+          <polygon points="360,70 180,305 180,255 360,490"/>
+        </clipPath>
 
-    <div class="hero-date">
-      19 SETEMBRO 2026<br>
-      <span>CUBA, PORTUGAL</span>
-    </div>
-  </div>
+        <filter id="shadowTop" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#6a5a48" flood-opacity="0.45"/>
+        </filter>
+        <filter id="shadowBottom" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="-4" stdDeviation="5" flood-color="#6a5a48" flood-opacity="0.28"/>
+        </filter>
+        <filter id="shadowSide" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#6a5a48" flood-opacity="0.2"/>
+        </filter>
+      </defs>
 
-</div>
-  <br>
-  <br>
-  <br>
-  <br>
--->
-  <div class="container">
+      <!-- CORPO BASE -->
+      <rect x="0" y="0" width="360" height="560" rx="6" fill="url(#floral)" clip-path="url(#envClip)"/>
+      <rect x="0" y="0" width="360" height="560" rx="6" fill="url(#bg)" clip-path="url(#envClip)"/>
+      <rect x="0" y="0" width="360" height="560" rx="6" fill="none" stroke="#c8c0b4" stroke-width="1"/>
 
-    <!-- SECÇÃO COM FUNDO -->
-    <div class="secao-fundo">
-      <img src="assets/ornamento-removebg-preview.png" class="ornamento" alt="" aria-hidden="true">
-  <div class="overlay">
-    <img src="assets/logo.png" class="logo" alt="AJ Logo">
-
-    <div class="hero-date">
-      <span>19 SETEMBRO 2026</span>
-     
-      <p>CUBA, PORTUGAL</p>
-    </div>
-  </div>
-  <br>
-  <br>
-  <br>
-      <img src="assets/diabroria.jpeg" class="photo" alt="Foto do casal">
-
-      <div class="title">Vamos casar!</div>
-
-      <div class="text">
-        <p>E não imaginamos este dia sem a vossa presença.</p>
-
-        <p>
-          No dia 19 de Setembro, prometemos dizer “sim”, rir,
-          emocionar-nos e festejar muito depois.
-        </p>
-
-        <p>
-          Gostaríamos muito que celebrasses connosco este
-          nosso dia, cheio de amor, alegria e pessoas especiais.
-        </p>
-      </div>
-
-      <div class="details details-igreja">
-        <img src="assets/igreja - cut.png" class="iconigreja">
-        <p>19 de Setembro de 2026</p>
-        <p><a href="https://www.google.com/maps/place/Igreja+Matriz+de+S%C3%A3o+Vicente/@38.1674891,-7.8931724,17z/data=!3m1!4b1!4m6!3m5!1s0xd1a0edcd490adb5:0x2ef035449714cdfe!8m2!3d38.1674891!4d-7.8905975!16s%2Fg%2F11g8xkr_s8?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer"> Matriz de Cuba | 14H30</a></p>
-      </div>
-      
-      <div class="details details-copos">
-        <img src="assets/copos - cut.png" class="icon">
-        <p><a href="https://www.google.com/maps/place/Herdade+da+Diabr%C3%B3ria+-+Agroturismo/@38.0478917,-7.9405616,17z/data=!3m1!4b1!4m9!3m8!1s0xd1a12c5d1a5b58b:0x852acee4767ea145!5m2!4m1!1i2!8m2!3d38.0478917!4d-7.9379867!16s%2Fg%2F1tc_gjbj?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Herdade da Diabrória | Beja</a></p>
-      </div>
-
-      <!-- BOTÃO FINAL -->
-      <div class="rsvp" >
+      <!-- ABA LATERAL ESQUERDA -->
+      <g filter="url(#shadowSide)">
+        <rect x="0" y="0" width="360" height="560" fill="url(#floral)" clip-path="url(#clipLeft)"/>
+        <rect x="0" y="0" width="360" height="560" fill="url(#bg)" clip-path="url(#clipLeft)" opacity="0.9"/>
+        <rect x="0" y="0" width="360" height="560" fill="#b8b0a8" clip-path="url(#clipLeft)" opacity="0.18"/>
         
-        <a href="https://forms.office.com/r/0EmKimUbge?origin=lprLink" target="_blank" rel="noopener noreferrer">Confirma a tua presença aqui</a>
-       
-      </div>
+      </g>
 
+      <!-- ABA LATERAL DIREITA -->
+      <g filter="url(#shadowSide)">
+        <rect x="0" y="0" width="360" height="560" fill="url(#floral)" clip-path="url(#clipRight)"/>
+        <rect x="0" y="0" width="360" height="560" fill="url(#bg)" clip-path="url(#clipRight)" opacity="0.9"/>
+        <rect x="0" y="0" width="360" height="560" fill="#b8b0a8" clip-path="url(#clipRight)" opacity="0.18"/>
+        
+
+      </g>
+
+      <!-- ABA INFERIOR -->
+      <g filter="url(#shadowBottom)">
+        <rect x="0" y="0" width="360" height="560" fill="url(#floral)" clip-path="url(#clipBottomFlap)"/>
+        <rect x="0" y="0" width="360" height="560" fill="url(#bg)" clip-path="url(#clipBottomFlap)" opacity="0.95"/>
+        <path d="M0,560 L360,560 L360,490 L225,255 Q180,208 135,255 L0,490 Z" fill="#ccc4b8" opacity="0.14"/>
+        <path d="M0,560 L360,560 L360,490 L225,255 Q180,208 135,255 L0,490 Z" fill="none" stroke="#8a7a68" stroke-width="1.5" opacity="0.55"/>
+
+      </g>
+
+      <!-- ABA SUPERIOR — por cima de tudo -->
+      <g class="flap-top-g" id="flapTopG" filter="url(#shadowTop)">
+        <rect x="0" y="0" width="360" height="560" fill="url(#floral)" clip-path="url(#clipTopFlap)"/>
+        <rect x="0" y="0" width="360" height="560" fill="url(#bg)" clip-path="url(#clipTopFlap)" opacity="0.95"/>
+        <path d="M0,0 L360,0 L360,70 L225,305 Q180,352 135,305 L0,70 Z" fill="#ccc4b8" opacity="0.13"/>
+        <path d="M0,0 L360,0 L360,70 L225,305 Q180,352 135,305 L0,70 Z" fill="none" stroke="#8a7a68" stroke-width="1.5" opacity="0.6"/>
+       
+      </g>
+
+      <!-- Decorações nos cantos -->
+      <g stroke="#a09080" fill="none" stroke-width="1" opacity="0.4">
+        <path d="M0,0 Q28,18 22,46"/><path d="M0,0 Q26,26 52,18"/>
+        <circle cx="18" cy="18" r="4" fill="#b8b0a0" stroke="none" opacity="0.2"/>
+        <path d="M360,0 Q332,18 338,46"/><path d="M360,0 Q334,26 308,18"/>
+        <circle cx="342" cy="18" r="4" fill="#b8b0a0" stroke="none" opacity="0.2"/>
+        <path d="M0,560 Q28,542 24,514"/><path d="M0,560 Q28,542 54,552"/>
+        <circle cx="18" cy="542" r="4" fill="#b8b0a0" stroke="none" opacity="0.2"/>
+        <path d="M360,560 Q332,542 336,514"/><path d="M360,560 Q332,542 306,552"/>
+        <circle cx="342" cy="542" r="4" fill="#b8b0a0" stroke="none" opacity="0.2"/>
+      </g>
+    </svg>
+
+    <!-- SELO -->
+    <div class="seal-area">
+      <img src="assets/medalha.png" class="seal-img" alt="Selo">
+      <div class="click-hint">
+        <span>clique para abrir</span>
+          <path d="M9 4.5V15M9 4.5C9 4.5 9 3 10.5 3C12 3 12 4.5 12 4.5V12M12 12C12 12 12 10.5 13.5 10.5C15 10.5 15 12 15 12V13.5M15 13.5C15 13.5 15 12 16.5 12C18 12 18 13.5 18 13.5V16.5C18 19.5 16 21 13.5 21H11C8 21 6 19 5.25 16.5L3.75 11.25C3.75 11.25 3 9 4.5 8.25C6 7.5 6.75 9.75 6.75 9.75L7.5 12" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
     </div>
 
   </div>
 </div>
 
-</div>
+<script>
+  const env = document.getElementById('env');
+  env.addEventListener('click', function() {
+    env.classList.add('open');
+    setTimeout(function() {
+      window.location.href = 'convite.html';
+    }, 800);
+  });
+</script>
 
-<script src="js/script.js"></script>
 </body>
 </html>
