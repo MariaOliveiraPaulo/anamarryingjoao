@@ -28,7 +28,7 @@ body {
 .container {
   margin-top: 40px; /* ajuste conforme necessário */
   width: 420px;
-  background: url(../assets/fundo.png);
+  background: url(../assets/fundo.jpeg);
   /*margin: 40px auto;*/
   padding: 30px 30px 50px 30px;
   text-align: center;
@@ -394,7 +394,7 @@ color: #4A6F56;  position: relative;
   transform:
     translate(-50%, 120%);
 
-  background:url(../assets/fundo.png);
+  background:url(../assets/fundo.jpeg);
 
   border-radius:12px;
 
