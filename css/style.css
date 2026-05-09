@@ -290,8 +290,17 @@ body {
 }
 
 .destaque .circle{
-  background:#4A6F56;
+  background: #fff;
 }
+
+.destaque .circle img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
+
 .label {
   width: 100px;
   height: 50px;
