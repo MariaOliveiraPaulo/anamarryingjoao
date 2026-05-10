@@ -111,13 +111,30 @@
       color: #b0915a; letter-spacing: 0.03em;
     }
 
-    /* Cartão invisível até o layout JS estar pronto */
-    #convite-card {
-      opacity: 0;
+    @font-face {
+      font-family: 'SS Bruney';
+      src: url('fonts/ss-bruney.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
     }
-    #convite-card.ready {
-      opacity: 1;
+
+    /* Ornamentos nos cantos do cartão */
+    .ornament {
+      position: absolute;
+      width: 80px; height: 80px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-image: url('assets/ornamento.png');
+      opacity: 0.85;
+      pointer-events: none;
     }
+    .ornament.top-left    { top: 0; left: 0; }
+    .ornament.top-right   { top: 0; right: 0; transform: scaleX(-1); }
+    .ornament.bottom-left { bottom: 0; left: 0; transform: scaleY(-1); }
+    .ornament.bottom-right{ bottom: 0; right: 0; transform: scale(-1); }
+    body { opacity: 0; }
+    body.ready { opacity: 1; transition: opacity 0.2s ease; }
+
     .pulse-ring {
       position: absolute; left: 50%; top: 56%;
       transform: translate(-50%,-50%);
@@ -135,11 +152,7 @@
   </style>
 
   
-  <!-- Fontes -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Great+Vibes&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="css/style.css">
+  <!-- SS Bruney carregada localmente via style.css -->
 </head>
 <body>
 <div class="scene">
@@ -196,7 +209,6 @@
       <path d="M0,560 L360,560 L360,490 L225,255 Q180,208 135,255 L0,490 Z" fill="#ccc4b8" opacity="0.14"/>
       <path d="M0,560 L360,560 L360,490 L225,255 Q180,208 135,255 L0,490 Z" fill="none" stroke="#8a7a68" stroke-width="1.5" opacity="0.55"/>
     </g>
-
   </svg>
 
   <!-- MÁSCARA + CARTÃO   z:3 -->
@@ -299,16 +311,24 @@
     card.style.top    = tl.y + 'px';
     card.style.height = (bl.y - tl.y) + 'px';
 
-    // Torna visível só depois do layout estar correcto
-    card.classList.add('ready');
+    // Torna tudo visível só depois do layout estar correcto
+    document.body.classList.add('ready');
   }
 
-  // Duplo rAF garante que o browser já calculou dvh e fez o primeiro layout
-  requestAnimationFrame(function () {
+  // Aguarda fontes + duplo rAF para dvh estabilizado
+  var doLayout = function () {
     requestAnimationFrame(function () {
-      layout();
+      requestAnimationFrame(function () {
+        layout();
+      });
     });
-  });
+  };
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(doLayout);
+  } else {
+    doLayout();
+  }
 
   // ResizeObserver é muito mais fiável em mobile do que o evento resize
   // (apanha mudanças de dvh, rotação, barra de endereços a aparecer/desaparecer)
