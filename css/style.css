@@ -82,13 +82,11 @@ body {
   margin-bottom:40px;
 }
 
-.data{
-  font-size:22px;
-}
 
 /* DATA */
 .data {
   position: relative;
+  font-size:22px;
   margin: 40px 0 30px 0;
   text-align: center;
   color: #4A6F56;
