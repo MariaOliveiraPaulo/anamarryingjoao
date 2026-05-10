@@ -111,7 +111,13 @@
       color: #b0915a; letter-spacing: 0.03em;
     }
 
-    /* Anel pulsante */
+    /* Cartão invisível até o layout JS estar pronto */
+    #convite-card {
+      opacity: 0;
+    }
+    #convite-card.ready {
+      opacity: 1;
+    }
     .pulse-ring {
       position: absolute; left: 50%; top: 56%;
       transform: translate(-50%,-50%);
@@ -128,12 +134,12 @@
     }
   </style>
 
+  
   <!-- Fontes -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
 <div class="scene">
@@ -197,18 +203,13 @@
   <div id="card-mask">
     <div id="convite-card">
 
-
-      <div class="card-inner">
-
-
           <!-- Ornamentos -->
   <div class="ornament top-left"></div>
   <div class="ornament top-right"></div>
   <div class="ornament bottom-left"></div>
   <div class="ornament bottom-right"></div>
-  
+      <div class="card-inner">
         <div class="card-nomes">Ana &amp; João</div>
-
         <div class="card-frase">
           Temos o prazer de vos convidar a partilhar connosco<br>
           a celebração do nosso matrimónio.
@@ -263,13 +264,11 @@
 
 <script>
 (function () {
-  var env   = document.getElementById('env');
-  var mask  = document.getElementById('card-mask');
-  var card  = document.getElementById('convite-card');
+  var env     = document.getElementById('env');
+  var mask    = document.getElementById('card-mask');
+  var card    = document.getElementById('convite-card');
   var clicked = false;
 
-  // Converte coordenada do viewBox (360×560) para px de ecrã
-  // O SVG usa preserveAspectRatio="none" → escala independente em X e Y
   function vb(x, y) {
     var W = env.offsetWidth, H = env.offsetHeight;
     return { x: x / 360 * W, y: y / 560 * H };
@@ -277,19 +276,14 @@
 
   function layout() {
     var W = env.offsetWidth, H = env.offsetHeight;
+    if (!W || !H) return; // dimensões ainda não prontas
 
-    // Pontos que definem a abertura do envelope em coordenadas de ecrã:
-    //   topo:      Y=70 no viewBox  (linha onde a aba superior termina)
-    //   diag esq:  (0,70)→(180,305) no viewBox
-    //   diag dir:  (360,70)→(180,305) no viewBox
-    //   aba inf:   cantos (135,255) e (225,255), pico (180,208) no viewBox
-    var tl = vb(0,   70);   // topo-esquerdo
-    var tr = vb(360, 70);   // topo-direito
-    var br = vb(225, 255);  // canto dir da aba inferior
-    var bc = vb(180, 208);  // pico da aba inferior
-    var bl = vb(135, 255);  // canto esq da aba inferior
+    var tl = vb(0,   70);
+    var tr = vb(360, 70);
+    var br = vb(225, 255);
+    var bc = vb(180, 208);
+    var bl = vb(135, 255);
 
-    // clip-path CSS em px — mesmo shape que a abertura do SVG
     mask.style.clipPath =
       'polygon(' +
         tl.x + 'px ' + tl.y + 'px, ' +
@@ -299,16 +293,32 @@
         bl.x + 'px ' + bl.y + 'px' +
       ')';
 
-    // Cartão: ocupa o espaço da abertura (de tl.y até bl.y)
     var margin = W * 0.08;
     card.style.left   = margin + 'px';
     card.style.width  = (W - margin * 2) + 'px';
     card.style.top    = tl.y + 'px';
     card.style.height = (bl.y - tl.y) + 'px';
+
+    // Torna visível só depois do layout estar correcto
+    card.classList.add('ready');
   }
 
-  layout();
-  window.addEventListener('resize', layout);
+  // Duplo rAF garante que o browser já calculou dvh e fez o primeiro layout
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      layout();
+    });
+  });
+
+  // ResizeObserver é muito mais fiável em mobile do que o evento resize
+  // (apanha mudanças de dvh, rotação, barra de endereços a aparecer/desaparecer)
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () {
+      requestAnimationFrame(layout);
+    }).observe(env);
+  } else {
+    window.addEventListener('resize', layout);
+  }
 
   env.addEventListener('click', function () {
     if (clicked) return;
