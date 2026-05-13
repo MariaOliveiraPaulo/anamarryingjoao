@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Envelope</title>
+  <title>Casamento Ana & João</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -56,7 +56,8 @@
       /* left/width/top/height definidos por JS */
       background: url(assets/fundo.jpeg) center/cover;
       border-radius: 12px 12px 0 0;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.18);
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.28), 0 -1px 0px rgba(0,0,0,0.15);
+      border-top: 1px solid #c8bfb4;
       /* começa translateY(100%) — abaixo da sua posição final */
       transform: translateY(100%);
       transition: transform 0s;
@@ -65,6 +66,8 @@
     #convite-card.rise {
       transition: transform 1.2s cubic-bezier(0.22,1,0.36,1);
       transform: translateY(0%);
+      box-shadow: 0 -12px 40px rgba(0,0,0,0.35), 0 -2px 8px rgba(0,0,0,0.2);
+      z-index: 5;
     }
 
     /* Conteúdo do cartão */
@@ -99,11 +102,17 @@
       transform: translate(-50%,-50%);
       display: flex; flex-direction: column; align-items: center; gap: 2vw;
       z-index: 10; transition: opacity 0.4s ease;
+      /* pulse-ring é posicionado absolutamente em relação ao seal-img */
+    }
+    .seal-img-wrap {
+      position: relative;
+      width: 25vw; height: 25vw; max-width: 110px; max-height: 110px;
     }
     .open .seal-area { opacity: 0; pointer-events: none; }
     .seal-img {
-      width: 25vw; height: 25vw; max-width: 110px; max-height: 110px;
+      width: 100%; height: 100%;
       border-radius: 50%; object-fit: cover; display: block;
+      position: relative; z-index: 1;
     }
     .click-hint span {
       font-family: 'Cormorant Infant', Georgia, serif;
@@ -136,14 +145,20 @@
     body.ready { opacity: 1; transition: opacity 0.2s ease; }
 
     .pulse-ring {
-      position: absolute; left: 50%; top: 56%;
-      transform: translate(-50%,-50%);
-      width: 25vw; height: 25vw; max-width: 110px; max-height: 110px;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%; height: 100%;
       border-radius: 50%; border: 1.5px solid #b0915a;
-      z-index: 9; pointer-events: none;
+      pointer-events: none;
       animation: pulseRing 2s ease-out infinite; transition: opacity 0.4s;
     }
     .open .pulse-ring { opacity: 0; }
+    .seal-img {
+      width: 100%; height: 100%;
+      border-radius: 50%; object-fit: cover; display: block;
+      position: relative; z-index: 1;
+    }
     @keyframes pulseRing {
       0%  { transform: translate(-50%,-50%) scale(1);    opacity: 0.6; }
       70% { transform: translate(-50%,-50%) scale(1.35); opacity: 0; }
@@ -262,12 +277,12 @@
     </g>
   </svg>
 
-  <!-- Anel pulsante -->
-  <div class="pulse-ring"></div>
-
   <!-- Selo -->
   <div class="seal-area" id="sealArea">
-    <img src="assets/medalha.png" class="seal-img" alt="Selo">
+    <div class="seal-img-wrap">
+      <div class="pulse-ring"></div>
+      <img src="assets/medalha.png" class="seal-img" alt="Selo">
+    </div>
     <div class="click-hint"><span>clique para abrir</span></div>
   </div>
 
@@ -347,12 +362,24 @@
     env.classList.add('open');
 
     setTimeout(function () {
+      mask.style.zIndex = '5';
       card.classList.add('rise');
     }, 480);
 
     setTimeout(function () {
       window.location.href = 'convite.html';
     }, 2100);
+  });
+
+  // Reset do estado quando se volta à página (ex: botão back do browser)
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      clicked = false;
+      env.classList.remove('open');
+      card.classList.remove('rise');
+      card.style.transform = '';
+      mask.style.zIndex = '3';
+    }
   });
 }());
 </script>
